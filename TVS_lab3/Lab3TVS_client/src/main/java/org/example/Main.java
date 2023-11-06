@@ -111,7 +111,7 @@ public class Main {
                         System.out.println("The row update, choose 1 to show table");
                         System.out.println("Response: Update " + updateResponse);
                     } catch (NegativeValueException | InvalidDateException | EmptyDataException |
-                             NonExistentIdException e) {
+                             NonExistentIdException | ParseException e) {
                         System.out.println("Exception: " + e.getMessage());
                     }
                     break;
