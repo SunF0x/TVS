@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.serial_service.InvalidDateException;
+import org.example.serial_service.NegativeValueException;
+import org.example.serial_service.NonExistentIdException;
+import org.example.serial_service.EmptyDataException;
 import org.example.serial_service.Serial;
 import org.example.serial_service.SerialService;
 
@@ -77,11 +81,11 @@ public class Main {
                     try {
                         dateFormat.setLenient(false);
                         Date date = dateFormat.parse(year);
-                        String response = serialService.getSerialWebServicePort().insertSerial(title,character,seasons, episodes,date);
+                        String response = serialService.getSerialWebServicePort().insertSerial(title,character,seasons,episodes,date);
                         System.out.println("The row insert, choose 1 to show table");
                         System.out.println("Id: " + response);
-                    } catch (Throwable str) {
-                        System.out.println(str.getMessage());
+                    } catch (NegativeValueException | InvalidDateException | ParseException e) {
+                        System.out.println("Exception: " + e.getMessage());
                     }
                     break;
                 case 3:
@@ -106,8 +110,9 @@ public class Main {
                             updateSerial(id,newTitle,newCharacter,newSeasons, newEpisodes, date1);
                         System.out.println("The row update, choose 1 to show table");
                         System.out.println("Response: Update " + updateResponse);
-                    } catch (Throwable str) {
-                        System.out.println(str.getMessage());
+                    } catch (NegativeValueException | InvalidDateException | EmptyDataException |
+                             NonExistentIdException e) {
+                        System.out.println("Exception: " + e.getMessage());
                     }
                     break;
                 case 4:
@@ -117,9 +122,8 @@ public class Main {
                         Integer deleteResponse = serialService.getSerialWebServicePort().
                                 deleteSerial(deleteId);
                         System.out.println("Response: Delete " + deleteResponse);
-                        break;
-                    } catch (Throwable str) {
-                        System.out.println(str.getMessage());
+                    } catch (NonExistentIdException e) {
+                        System.out.println("Exception: " + e.getMessage());
                     }
                     break;
                 default:

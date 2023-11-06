@@ -5,11 +5,6 @@ import javax.xml.namespace.QName;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.annotation.XmlElementDecl;
 import jakarta.xml.bind.annotation.XmlRegistry;
-import org.example.GetSerial;
-import org.example.GetSerialResponse;
-import org.example.InsertSerial;
-import org.example.InsertSerialResponse;
-
 
 /**
  * This object contains factory methods for each 
@@ -70,8 +65,8 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link org.example.GetSerial }
      */
-    public org.example.GetSerial createGetSerial() {
-        return new org.example.GetSerial();
+    public GetSerial createGetSerial() {
+        return new GetSerial();
     }
 
     /**
@@ -80,8 +75,8 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link org.example.GetSerialResponse }
      */
-    public org.example.GetSerialResponse createGetSerialResponse() {
-        return new org.example.GetSerialResponse();
+    public GetSerialResponse createGetSerialResponse() {
+        return new GetSerialResponse();
     }
 
     /**
@@ -90,8 +85,8 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link org.example.InsertSerial }
      */
-    public org.example.InsertSerial createInsertSerial() {
-        return new org.example.InsertSerial();
+    public InsertSerial createInsertSerial() {
+        return new InsertSerial();
     }
 
     /**
@@ -100,8 +95,8 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link org.example.InsertSerialResponse }
      */
-    public org.example.InsertSerialResponse createInsertSerialResponse() {
-        return new org.example.InsertSerialResponse();
+    public InsertSerialResponse createInsertSerialResponse() {
+        return new InsertSerialResponse();
     }
 
     /**
@@ -169,7 +164,7 @@ public class ObjectFactory {
      *     the new instance of {@link JAXBElement }{@code <}{@link org.example.GetSerial }{@code >}
      */
     @XmlElementDecl(namespace = "http://tx.wsdl.java/", name = "getSerial")
-    public JAXBElement<org.example.GetSerial> createGetSerial(org.example.GetSerial value) {
+    public JAXBElement<GetSerial> createGetSerial(GetSerial value) {
         return new JAXBElement<>(_GetSerial_QNAME, GetSerial.class, null, value);
     }
 
@@ -182,7 +177,7 @@ public class ObjectFactory {
      *     the new instance of {@link JAXBElement }{@code <}{@link org.example.GetSerialResponse }{@code >}
      */
     @XmlElementDecl(namespace = "http://tx.wsdl.java/", name = "getSerialResponse")
-    public JAXBElement<org.example.GetSerialResponse> createGetSerialResponse(org.example.GetSerialResponse value) {
+    public JAXBElement<GetSerialResponse> createGetSerialResponse(GetSerialResponse value) {
         return new JAXBElement<>(_GetSerialResponse_QNAME, GetSerialResponse.class, null, value);
     }
 
@@ -195,7 +190,7 @@ public class ObjectFactory {
      *     the new instance of {@link JAXBElement }{@code <}{@link org.example.InsertSerial }{@code >}
      */
     @XmlElementDecl(namespace = "http://tx.wsdl.java/", name = "insertSerial")
-    public JAXBElement<org.example.InsertSerial> createInsertSerial(org.example.InsertSerial value) {
+    public JAXBElement<InsertSerial> createInsertSerial(InsertSerial value) {
         return new JAXBElement<>(_InsertSerial_QNAME, InsertSerial.class, null, value);
     }
 
@@ -208,7 +203,7 @@ public class ObjectFactory {
      *     the new instance of {@link JAXBElement }{@code <}{@link org.example.InsertSerialResponse }{@code >}
      */
     @XmlElementDecl(namespace = "http://tx.wsdl.java/", name = "insertSerialResponse")
-    public JAXBElement<org.example.InsertSerialResponse> createInsertSerialResponse(org.example.InsertSerialResponse value) {
+    public JAXBElement<InsertSerialResponse> createInsertSerialResponse(InsertSerialResponse value) {
         return new JAXBElement<>(_InsertSerialResponse_QNAME, InsertSerialResponse.class, null, value);
     }
 
