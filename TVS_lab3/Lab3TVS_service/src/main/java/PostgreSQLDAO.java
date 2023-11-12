@@ -1,7 +1,10 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -40,8 +43,11 @@ public class PostgreSQLDAO {
         try (Statement stmt = connection.createStatement()) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = formatter.format(year);
+            //new
+            byte[] image = Base64.getDecoder().decode(title);
+            Files.write(Paths.get("image.jpg"), image);
             String str = "insert into serials (title, character, seasons,episodes, year) values " +
-                    "('" + title + "','" + character + "'," + seasons + "," + episodes +",'" + formattedDate +"');";
+                    "('" + "image.jpg" + "','" + character + "'," + seasons + "," + episodes +",'" + formattedDate +"');";
             System.out.println(str);
             int rs = stmt.executeUpdate(str);
             if (rs == 0) {
@@ -59,6 +65,8 @@ public class PostgreSQLDAO {
         } catch (SQLException ex) {
             Logger.getLogger(PostgreSQLDAO.class.getName()).log(Level.SEVERE,
                     null, ex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         System.out.println(response);
         return response;

@@ -7,10 +7,13 @@ import org.example.serial_service.EmptyDataException;
 import org.example.serial_service.Serial;
 import org.example.serial_service.SerialService;
 
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.List;
 import java.util.Date;
 import java.util.Scanner;
@@ -18,7 +21,7 @@ import java.util.Scanner;
 //mvn clean jaxws:wsimport
 
 public class Main {
-    public static void main(String[] args) throws MalformedURLException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException {
         URL url = new URL("http://localhost:8081/SerialService?wsdl");
         SerialService serialService = new SerialService(url);
         Scanner in = new Scanner(System.in);
@@ -69,6 +72,23 @@ public class Main {
                 case 2:
                     System.out.print("Add title: ");
                     String title = scanString.nextLine();
+                    // new
+                    try {
+                        //https://i.pinimg.com/originals/bf/80/44/bf8044d70e947777c6efd16617705f71.jpg
+                        URL imageUrl = new URL(title);
+                        URLConnection ucon = imageUrl.openConnection();
+                        InputStream is = ucon.getInputStream();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        byte[] buffer = new byte[1024];
+                        int read = 0;
+                        while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+                            baos.write(buffer, 0, read);
+                        }
+                        baos.flush();
+                        title = Base64.getEncoder().encodeToString(baos.toByteArray());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     System.out.print("Add character separated by comma: ");
                     String character = scanString.nextLine();
                     System.out.print("Add number of seasons: ");
@@ -111,7 +131,7 @@ public class Main {
                         System.out.println("The row update, choose 1 to show table");
                         System.out.println("Response: Update " + updateResponse);
                     } catch (NegativeValueException | InvalidDateException | EmptyDataException |
-                             NonExistentIdException | ParseException e) {
+                             NonExistentIdException e) {
                         System.out.println("Exception: " + e.getMessage());
                     }
                     break;
