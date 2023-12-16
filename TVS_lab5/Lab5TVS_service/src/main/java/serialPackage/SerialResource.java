@@ -1,3 +1,5 @@
+package serialPackage;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -52,8 +54,11 @@ public class SerialResource {
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    public String deleteSerial(String data) throws JSONException {
+    public String deleteSerial(String data) throws JSONException, NonExistentIdException {
         JSONObject obj = new JSONObject(data);
-        return new PostgreSQLDAO(connection).deleteSerial(Integer.parseInt(obj.getString("id")));
+        String response = new PostgreSQLDAO(connection).deleteSerial(Integer.parseInt(obj.getString("id")));
+        if (Objects.equals(response, "0"))
+            throw NonExistentIdException.DEFAULT_INSTANCE;
+        return response;
     }
 }

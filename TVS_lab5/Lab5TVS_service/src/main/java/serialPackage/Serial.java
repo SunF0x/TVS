@@ -1,3 +1,5 @@
+package serialPackage;
+
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
@@ -62,7 +64,7 @@ public class Serial {
 
     @Override
     public String toString() {
-        return "Serial {" + "title=" + title + ", character=" + character + ", episodes=" + episodes +
+        return "serialPackage.Serial {" + "title=" + title + ", character=" + character + ", episodes=" + episodes +
                 ", seasons=" + seasons + ", year=" + year + '}';
     }
 }
