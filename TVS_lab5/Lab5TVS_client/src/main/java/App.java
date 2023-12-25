@@ -3,12 +3,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
+import java.util.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
+import java.util.Base64;
+
 public class App {
     private static final String URL ="http://localhost:8081/rest/serials";
     public static void main(String[] args) throws ParseException {
@@ -37,9 +36,7 @@ public class App {
                     System.out.print("Add preview date (ex. 16.11.2004): ");
                     String year = scanString.nextLine();
                     //System.out.println(dateFormat.format(date));
-                    String response = insertSerial(client,title,character,seasons, episodes,year);
-                    System.out.println("The row insert, choose 1 to show table");
-                    System.out.println("Id: " + response);
+                    insertSerial(client,title,character,seasons, episodes,year);
                     break;
                 case 3:
                     System.out.print("Which row update, enter id: ");
@@ -57,15 +54,12 @@ public class App {
 //                    System.out.print(newYear);
                     //SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd.MM.yyyy");
                     String date1 = (newYear != null && !newYear.trim().isEmpty()) ? newYear : "0";
-                    String updateResponse = updateSerial(client, id,newTitle,newCharacter,newSeasons, newEpisodes, date1);
-                    System.out.println("The row update, choose 1 to show table");
-                    System.out.println("Response: Update " + updateResponse);
+                    updateSerial(client, id,newTitle,newCharacter,newSeasons, newEpisodes, date1);
                     break;
                 case 4:
                     System.out.print("Which row delete, enter id: ");
                     int deleteId = in.nextInt();
-                    String deleteResponse = deleteSerial(client, deleteId);
-                    System.out.println("Response: Delete " + deleteResponse);
+                    deleteSerial(client, deleteId);
                     break;
 //            case 5:
 //                break;
@@ -93,53 +87,75 @@ public class App {
         return response.getEntity(type);
     }
 
-    private static String insertSerial(Client client, String title, String character,
+    private static void insertSerial(Client client, String title, String character,
                                              Integer seasons, Integer episodes, String year)
     {
+        String auth = getAuth();
+        System.out.println(auth);
         WebResource webResource = client.resource(URL);
         String json = "{\"title\":"+title+",\"character\":'"+character+"',\"seasons\":"
                 +seasons+",\"episodes\":"+episodes+",\"year\":"+year+"}";
-        System.out.println(json);
         ClientResponse response = webResource.accept("application/json").type("application/json")
+                .header("authorization", "Basic " + auth)
                 .post(ClientResponse.class,json);
         if (response.getStatus() !=
                 ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            System.out.println("Status: " + response.getStatus());
+            System.out.println("Error: " + response.getEntity(String.class));
         }
-        return response.getEntity(String.class);
+        else {
+            System.out.println("The row insert, choose 1 to show table");
+            System.out.println("Id: " + response.getEntity(String.class));
+        }
     }
 
-    private static String updateSerial(Client client, Integer id, String title, String character,
+    private static void updateSerial(Client client, Integer id, String title, String character,
                                        Integer seasons, Integer episodes, String year)
     {
+        String auth = getAuth();
+        System.out.println(auth);
         WebResource webResource = client.resource(URL);
         String json = "{\"id\":"+id+",\"title\":'"+title+"',\"character\":'"+character+"',\"seasons\":"
                 +seasons+",\"episodes\":"+episodes+",\"year\":"+year+"}";
-        System.out.println(json);
         ClientResponse response = webResource.accept("application/json").type("application/json")
+                .header("authorization", "Basic " + auth)
                 .put(ClientResponse.class,json);
         if (response.getStatus() !=
                 ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            System.out.println("Status: " + response.getStatus());
+            System.out.println("Error: " + response.getEntity(String.class));
         }
-        return response.getEntity(String.class);
+        else {
+            System.out.println("The row update, choose 1 to show table");
+            System.out.println("Response: Update " + response.getEntity(String.class));
+        };
     }
 
-    private static String deleteSerial(Client client, Integer id)
+    private static void deleteSerial(Client client, Integer id)
     {
+        String auth = getAuth();
+        System.out.println(auth);
         WebResource webResource = client.resource(URL);
         ClientResponse response = webResource.accept("application/json").type("application/json")
+                .header("authorization", "Basic " + auth)
                 .delete(ClientResponse.class,"{\"id\":"+id+"}");
         if (response.getStatus() !=
                 ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed");
+            System.out.println("Status: " + response.getStatus());
+            System.out.println("Error: " + response.getEntity(String.class));
         }
-        return response.getEntity(String.class);
+        else System.out.println("Response: Delete " + response.getEntity(String.class));
     }
 
     private static void printList(List<Serial> serials) {
         for (Serial serial : serials) {
             System.out.println(serial);
         }
+    }
+
+    private static String getAuth() {
+        String userName = "admin";
+        String password = "adm1n";
+        return Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
     }
 }
