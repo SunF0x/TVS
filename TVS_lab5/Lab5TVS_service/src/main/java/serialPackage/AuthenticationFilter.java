@@ -30,7 +30,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         boolean isAuthenticated = checkAuthentication(auth);
         System.out.println(isAuthenticated);
 
-        return isAuthenticated ? containerRequest : null;
+        if (isAuthenticated) {
+            return containerRequest;
+        }
+        else throw new WebApplicationException(Status.FORBIDDEN.getStatusCode());
     }
 
     // For simplicity, it checks only if auth contains "basic"
